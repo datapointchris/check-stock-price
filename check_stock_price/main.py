@@ -34,6 +34,7 @@ def calculate_investment_dollars(account_balance, target_balance, percentage_cha
 
 def save_to_local(ticker, data):
     file_path = pathlib.Path(f'data/{ticker}.json')
+    file_path.parent.mkdir(parents=True, exist_ok=True)
     with open(file_path, 'w') as f:
         json.dump(data, f)
 
