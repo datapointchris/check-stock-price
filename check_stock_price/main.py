@@ -11,9 +11,8 @@ import requests
 import typer
 from rich import print
 
-
 # This is for the local install and update, possibly not necessary with pipx install
-SCRIPT_LOCATION = pathlib.Path().home().joinpath('code/projects/python/check-stock-price')
+ACCOUNT_BALANCE = 10_000
 
 app = typer.Typer()
 
@@ -141,16 +140,23 @@ def check(ctx: typer.Context):
 
 @app.command()
 def update():
+
     print('[blue]Updating check-stock-price...[/blue]')
-    print(SCRIPT_LOCATION)
-    os.chdir(SCRIPT_LOCATION)
+    script_location = pathlib.Path().home().joinpath('code/projects/python/check-stock-price')
+    print(script_location)
+    os.chdir(script_location)
 
     print('[green]Building new wheel...[/green]')
-    subprocess.call('poetry build', shell=True)
+    build_command = 'poetry build --format=wheel'
+    subprocess.call(build_command, shell=True)
 
     print('[green]Installing new wheel...[/green]')
-    wheel_path = next(SCRIPT_LOCATION.joinpath('dist').glob('*.whl'))
-    subprocess.call(f'pip install --quiet --user {wheel_path} --force-reinstall', shell=True)
+    wheels = script_location.joinpath('dist').glob('*.whl')
+    latest_wheel = sorted(wheels)[-1]
+    print(latest_wheel)
+    # pipx upgrade does not work, instead force install
+    install_command = f'pipx install --force {latest_wheel}'
+    subprocess.call(install_command, shell=True)
     print('[green]Done![/green]')
 
 
