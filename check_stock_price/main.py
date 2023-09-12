@@ -14,14 +14,7 @@ from rich import print
 
 # This is for the local install and update, possibly not necessary with pipx install
 SCRIPT_LOCATION = pathlib.Path().home().joinpath('code/projects/python/check-stock-price')
-TICKERS = [('VOO', 400), ('SCHG', 70), ('SCHX', 50), ('SCHD', 70)]
-PERCENTAGE_FALL_THRESHOLD = -0.05
-ACCOUNT_BALANCE = 10_000
-TARGET_BALANCE = 5_000
-AGGRESSION = 0.5  # 0-1 where 1 is most aggressive
 
-# dotenv.load_dotenv(SCRIPT_LOCATION.joinpath('.env'))
-# API_KEY = os.environ['API_KEY']
 app = typer.Typer()
 
 
