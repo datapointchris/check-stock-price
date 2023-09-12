@@ -19,6 +19,7 @@ python-dotenv = "^1.0.0"
 pendulum = "^2.1.2"
 pandas = "^2.1.0"
 seaborn = "^0.12.2"
+boto3 = "^1.28.45"
 
 
 
