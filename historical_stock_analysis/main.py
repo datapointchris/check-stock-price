@@ -43,7 +43,8 @@ def main():
             likelihood, investment_percentage = calculate_likelihood_and_percentage_change(last_change)
 
             print(
-                f"For {period}-day period: Likelihood: {likelihood:.4f}, Investment Percentage: {investment_percentage:.2f}%"
+                f'For {period}-day period: Likelihood: {likelihood:.4f}, '
+                f'Investment Percentage: {investment_percentage:.2f}%'
             )
 
         print("=" * 40)

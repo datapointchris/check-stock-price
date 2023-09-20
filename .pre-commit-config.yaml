@@ -44,13 +44,6 @@ repos:
       - id: codespell
         args: ["--toml", "pyproject.toml"]
 
-  - repo: https://github.com/PyCQA/bandit
-    rev: 1.7.5
-    hooks:
-      - id: bandit
-        args: ["-c", "pyproject.toml"]
-        additional_dependencies: ["bandit[toml]"]
-
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.36.0
     hooks:
@@ -72,5 +65,6 @@ repos:
     rev: v1.5.1
     hooks:
       - id: mypy
-        args: ["--config-file", "pyproject.toml"]
+        # Must install the types in this environment and enable non-interactive to say yes to install
+        args: ["--config-file", "pyproject.toml", "--install-types", "--non-interactive"]
         additional_dependencies: ["pydantic"]

@@ -12,7 +12,7 @@ import pendulum
 import requests
 import typer
 from rich import print
-from tabulate import tabulate, SEPARATING_LINE
+from tabulate import SEPARATING_LINE, tabulate
 from typing_extensions import Annotated
 
 logger = logging.getLogger('check_stock_price')
@@ -79,7 +79,7 @@ class RoboInvestor:
 
     def load_stock_data_from_local(self, ticker):
         file_path = pathlib.Path(f'data/{ticker}.json')
-        with open(file_path, 'r') as f:
+        with open(file_path) as f:
             return json.load(f)
 
     def load_or_request_data(self, ticker, threshold_minutes: Optional[int] = None):
@@ -105,7 +105,7 @@ class RoboInvestor:
 
     def save_tickers_to_dynamodb(self, tickers: Sequence[tuple[str, float]]) -> None:
         for ticker, price_threshold in tickers:
-            self.table.put_item(Item={'ticker': ticker, 'threshold': float(price_threshold)})
+            self.table.put_item(Item={'ticker': ticker, 'threshold': price_threshold})
 
     def calculate_investment_dollars(self, account_balance: float, percentage_change: float) -> float:
         difference = account_balance - self.parameters.target_account_balance
