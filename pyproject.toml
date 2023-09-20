@@ -5,7 +5,7 @@ description = ""
 authors = ["Chris Birch <datapointchris@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "check_stock_price"}]
+packages = [{ include = "check_stock_price" }]
 
 [tool.poetry.scripts]
 check-stock-price = "check_stock_price.main:app"
@@ -24,11 +24,57 @@ numpy = "^1.25.2"
 jupyter = "^1.0.0"
 isort = "^5.12.0"
 tabulate = "^0.9.0"
-
-
+pre-commit = "^3.4.0"
 
 [tool.poetry.group.dev.dependencies]
 ipykernel = "^6.25.2"
+
+
+# ---------- Configurations ---------- #
+
+[tool.bandit]
+exclude_dirs = ["tests", "scripts"]
+skips = ["B311"]
+
+[tool.black]
+line-length = 120
+skip-string-normalization = true
+exclude = '''
+(
+/alembic
+| .git
+| .mypy_cache
+| .venv
+| build
+| dist
+)
+'''
+
+[tool.codespell]
+skip = '*.css.map'
+ignore-words-list = "astroid,aNULL,ANULL,anull"
+check-filenames = true
+# count = ""
+# quiet-level = 3
+
+[tool.isort]
+line_length = 120
+profile = "black"
+atomic = true
+skip = [".gitignore"]
+extend_skip = [".md", ".json"]
+
+[tool.mypy]
+pretty = true
+ignore_missing_imports = true
+strict = true
+allow_untyped_defs = true
+check_untyped_defs = false  # Can enable this when all the routes are updated
+plugins = ["pydantic.mypy"]
+warn_return_any = false
+
+[tool.refurb]
+enable_all = true
 
 [build-system]
 requires = ["poetry-core"]
