@@ -48,8 +48,10 @@ class RoboInvestor:
         params = {}
         for param in response['Parameters']:
             _prefix, name = param['Name'].rsplit('/', maxsplit=1)
-            params[name] = param['Value']
-            logger.info(f'Loaded {name} from parameter store')
+            value = param['Value']
+            params[name] = value
+            if name != 'alphavantage_api_key':
+                logger.info(f'Loaded {name}: {value} from parameter store')
         # I don't know how to get the types from SSM so I'm just casting them here
         return Parameters(
             target_account_balance=float(params['target_account_balance']),
@@ -86,17 +88,19 @@ class RoboInvestor:
         threshold_minutes = threshold_minutes or self.parameters.threshold_data_age_minutes
         file_path = pathlib.Path(f'data/{ticker}.json')
         if not file_path.exists():
-            logger.info(f'No local data found for {ticker}, requesting from API')
+            logger.info(f'{ticker} - No local data, requesting from API')
             data = self.request_api_stock_data(ticker)
             self.save_stock_data_to_local(ticker, data)
         else:
             modified_time = pendulum.from_timestamp(file_path.stat().st_mtime)
-            if pendulum.now().diff(modified_time).minutes > threshold_minutes:
-                logger.info(f'Local data for {ticker} is stale, requesting from API')
+            time_diff = pendulum.now().diff(modified_time).minutes
+            logger.info(f'{ticker}: data {time_diff} minutes old')
+            if time_diff > threshold_minutes:
+                logger.info(f'{ticker}: Requesting data from API')
                 data = self.request_api_stock_data(ticker)
                 self.save_stock_data_to_local(ticker, data)
             else:
-                logger.info(f'Loading local data for {ticker}')
+                logger.info(f'{ticker}: Loading data from local')
                 data = self.load_stock_data_from_local(ticker)
         return data
 
