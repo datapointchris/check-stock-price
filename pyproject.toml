@@ -50,7 +50,7 @@ exclude = '''
 '''
 
 [tool.codespell]
-skip = '*.css.map'
+skip = '*.css.map,*.ipynb'
 ignore-words-list = "astroid,aNULL,ANULL,anull"
 check-filenames = true
 # count = ""
