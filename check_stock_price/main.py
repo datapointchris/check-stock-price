@@ -188,18 +188,22 @@ def check(
 
     # Save parameters which will be loaded
     if target_balance:
+        logger.info(f'Setting target account balance to {target_balance}')
         rbi.save_parameters_to_parameter_store({'target_account_balance': str(target_balance)})
         rbi.parameters.target_account_balance = target_balance
 
     if threshold_minutes:
+        logger.info(f'Setting threshold data age to {threshold_minutes} minutes')
         rbi.save_parameters_to_parameter_store({'threshold_data_age_minutes': str(threshold_minutes)})
         rbi.parameters.threshold_data_age_minutes = threshold_minutes
 
     if investment_aggression:
+        logger.info(f'Setting investment aggression to {investment_aggression}')
         rbi.save_parameters_to_parameter_store({'investment_aggression': str(investment_aggression)})
         rbi.parameters.investment_aggression = investment_aggression
 
     if percentage_fall_threshold:
+        logger.info(f'Setting percentage fall threshold to {percentage_fall_threshold}')
         rbi.save_parameters_to_parameter_store({'percentage_fall_threshold': str(percentage_fall_threshold)})
         rbi.parameters.percentage_fall_threshold = percentage_fall_threshold
 
@@ -209,22 +213,30 @@ def check(
 @app.command()
 def update():
     print('[blue]Updating check-stock-price...[/blue]')
+    logger.info('Updating check-stock-price')
     script_location = pathlib.Path().home().joinpath('code/projects/python/robo-investor')
     print(script_location)
+    logger.info(f'Script location: {script_location}')
     os.chdir(script_location)
 
     print('[green]Building new wheel...[/green]')
+    logger.info('Building new wheel')
     build_command = 'poetry build --format=wheel'
+    logger.info(f'Build command: {build_command}')
     subprocess.call(build_command, shell=True)
 
     print('[green]Installing new wheel...[/green]')
+    logger.info('Installing new wheel')
     wheels = script_location.joinpath('dist').glob('*.whl')
     latest_wheel = sorted(wheels)[-1]
     print(latest_wheel)
+    logger.info(f'Latest wheel: {latest_wheel}')
     # pipx upgrade does not work, instead force install
     install_command = f'pipx install --force {latest_wheel}'
+    logger.info(f'Install command: {install_command}')
     subprocess.call(install_command, shell=True)
     print('[green]Done![/green]')
+    logger.info('Completed update')
 
 
 if __name__ == "__main__":
