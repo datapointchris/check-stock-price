@@ -214,7 +214,7 @@ def check(
 def update():
     print('[blue]Updating check-stock-price...[/blue]')
     logger.info('Updating check-stock-price')
-    script_location = pathlib.Path().home().joinpath('code/projects/python/robo-investor')
+    script_location = pathlib.Path().home().joinpath('code/python/robo-investor')
     print(script_location)
     logger.info(f'Script location: {script_location}')
     os.chdir(script_location)
