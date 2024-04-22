@@ -16,7 +16,7 @@ from tabulate import SEPARATING_LINE, tabulate
 from typing_extensions import Annotated
 
 logger = logging.getLogger('check_stock_price')
-handler = logging.FileHandler('check_stock_price.log')
+handler = logging.FileHandler('/usr/local/var/log/check_stock_price.log')
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
